@@ -1,4 +1,4 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Input, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
@@ -74,11 +74,14 @@ export const CreatePost: React.FC<{}> = ({}) => {
                 label="Body"
               />
             </Box>
+            <Text fontWeight="semibold" mt={4}>
+              Image
+            </Text>
             <Box
-              borderColor="green"
-              mt={4}
+              mt={2}
+              borderColor="dark"
               borderStyle="dashed"
-              borderWidth="1px"
+              borderWidth="2px"
               borderRadius="lg"
               p={5}
               {...getRootProps()}
@@ -89,11 +92,17 @@ export const CreatePost: React.FC<{}> = ({}) => {
               ) : (
                 <Text>
                   Drag 'n' drop your image here, or just click to select an
-                  image
+                  image🍎
                 </Text>
               )}
             </Box>
-            <Button mt={4} type="submit" isLoading={isSubmitting}>
+            <Button
+              bgColor="dark"
+              textColor="white"
+              mt={4}
+              type="submit"
+              isLoading={isSubmitting}
+            >
               Create post
             </Button>
           </Form>

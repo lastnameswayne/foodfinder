@@ -7,10 +7,14 @@ import {
   Stack,
   Text,
   Image,
+  Spacer,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
+import React from "react";
+import DetailsFloat from "../components/DetailsFloat";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 import { Layout } from "../components/Layout";
+import { MenuSettings } from "../components/MenuSettings";
 import { usePostsQuery, PostsQuery, useMeQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
 //restart
@@ -46,26 +50,33 @@ const Index = () => {
           {data!.posts.posts.map((p) =>
             !p ? null : (
               <Flex
-                w={["100%", "75%", "50%", "25%"]}
+                style={{
+                  background: `linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)), url(${p.img})`,
+                }}
+                // bgImage={`url(${p.img})`}
+                w={["100%", "75%", "50%", "20em"]}
+                h={["100%, 75%", "50%", "25em"]}
                 key={p.id}
                 p={5}
                 shadow="md"
                 borderWidth="1px"
+                borderRadius={20}
+                overflow="hidden"
               >
-                <Box flex={1}>
+                <Box textColor="white" flex={1}>
                   <Flex>
                     <Link>
                       <NextLink href="/post/[id]" as={`/post/${p.id}`}>
                         <Heading fontSize="xl">{p.title}</Heading>
                       </NextLink>
                     </Link>
+                    <Spacer />
                     {meData?.me?.id !== p.creator.id ? null : (
-                      <EditDeletePostButtons id={p.id}></EditDeletePostButtons>
+                      <MenuSettings id={p.id}></MenuSettings>
                     )}
                   </Flex>
                   <Text>by {p.creator.username}</Text>
-                  <Text mt={4}>{p.textSnippet}</Text>
-                  <Image src={p.img}></Image>
+                  {/* <Text mt={4}>{p.textSnippet}</Text> */}
                 </Box>
               </Flex>
             )

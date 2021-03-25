@@ -1,18 +1,19 @@
 import { Box, Button } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../../../components/InputField";
 import { Layout } from "../../../components/Layout";
-import { usePostQuery, useUpdatePostMutation } from "../../../generated/graphql";
-import { createUrqlClient } from "../../../utils/createUrqlClient";
+import {
+  usePostQuery,
+  useUpdatePostMutation,
+} from "../../../generated/graphql";
 import { useGetIntId } from "../../../utils/useGetIntId";
 import { withApollo } from "../../../utils/withApollo";
 
 const EditPost = ({}) => {
-    const router = useRouter()
-    const intId = useGetIntId()
+  const router = useRouter();
+  const intId = useGetIntId();
 
   const { data, loading } = usePostQuery({
     skip: intId === -1,
@@ -20,7 +21,7 @@ const EditPost = ({}) => {
       id: intId,
     },
   });
-  const [updatePost] = useUpdatePostMutation()
+  const [updatePost] = useUpdatePostMutation();
   if (loading) {
     return (
       <Layout>
@@ -42,8 +43,8 @@ const EditPost = ({}) => {
         initialValues={{ title: data.post.title, text: data.post.text }}
         onSubmit={async (values, { setErrors }) => {
           console.log(values);
-          await updatePost({variables: {id: intId, ...values}})
-          router.back()
+          await updatePost({ variables: { id: intId, ...values } });
+          router.back();
         }}
       >
         {({ isSubmitting }) => (
@@ -61,7 +62,13 @@ const EditPost = ({}) => {
                 label="Body"
               />
             </Box>
-            <Button mt={4} type="submit" isLoading={isSubmitting}>
+            <Button
+              bgColor="dark"
+              textColor="white"
+              mt={4}
+              type="submit"
+              isLoading={isSubmitting}
+            >
               Update post
             </Button>
           </Form>
@@ -71,6 +78,4 @@ const EditPost = ({}) => {
   );
 };
 
-
-
-export default withApollo({ssr: true})(EditPost);;
+export default withApollo({ ssr: true })(EditPost);
