@@ -11,6 +11,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 export type Query = {
@@ -63,21 +65,15 @@ export type User = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  vote: Scalars['Boolean'];
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
+  singleUpload: Scalars['Boolean'];
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
-};
-
-
-export type MutationVoteArgs = {
-  value: Scalars['Int'];
-  postId: Scalars['Int'];
 };
 
 
@@ -95,6 +91,11 @@ export type MutationUpdatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Int'];
+};
+
+
+export type MutationSingleUploadArgs = {
+  file: Scalars['Upload'];
 };
 
 
@@ -123,6 +124,7 @@ export type PostInput = {
   title: Scalars['String'];
   text: Scalars['String'];
 };
+
 
 export type UserResponse = {
   __typename?: 'UserResponse';
@@ -269,15 +271,14 @@ export type UpdatePostMutation = (
   )> }
 );
 
-export type VoteMutationVariables = Exact<{
-  value: Scalars['Int'];
-  postId: Scalars['Int'];
+export type UploadImageMutationVariables = Exact<{
+  file: Scalars['Upload'];
 }>;
 
 
-export type VoteMutation = (
+export type UploadImageMutation = (
   { __typename?: 'Mutation' }
-  & Pick<Mutation, 'vote'>
+  & Pick<Mutation, 'singleUpload'>
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -623,37 +624,36 @@ export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
 export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
 export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
-export const VoteDocument = gql`
-    mutation Vote($value: Int!, $postId: Int!) {
-  vote(value: $value, postId: $postId)
+export const UploadImageDocument = gql`
+    mutation UploadImage($file: Upload!) {
+  singleUpload(file: $file)
 }
     `;
-export type VoteMutationFn = Apollo.MutationFunction<VoteMutation, VoteMutationVariables>;
+export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation, UploadImageMutationVariables>;
 
 /**
- * __useVoteMutation__
+ * __useUploadImageMutation__
  *
- * To run a mutation, you first call `useVoteMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useVoteMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUploadImageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadImageMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [voteMutation, { data, loading, error }] = useVoteMutation({
+ * const [uploadImageMutation, { data, loading, error }] = useUploadImageMutation({
  *   variables: {
- *      value: // value for 'value'
- *      postId: // value for 'postId'
+ *      file: // value for 'file'
  *   },
  * });
  */
-export function useVoteMutation(baseOptions?: Apollo.MutationHookOptions<VoteMutation, VoteMutationVariables>) {
-        return Apollo.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument, baseOptions);
+export function useUploadImageMutation(baseOptions?: Apollo.MutationHookOptions<UploadImageMutation, UploadImageMutationVariables>) {
+        return Apollo.useMutation<UploadImageMutation, UploadImageMutationVariables>(UploadImageDocument, baseOptions);
       }
-export type VoteMutationHookResult = ReturnType<typeof useVoteMutation>;
-export type VoteMutationResult = Apollo.MutationResult<VoteMutation>;
-export type VoteMutationOptions = Apollo.BaseMutationOptions<VoteMutation, VoteMutationVariables>;
+export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMutation>;
+export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
+export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {

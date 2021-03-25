@@ -1,7 +1,7 @@
-import { Box, Button, Flex, Heading, Spacer, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Link, Spacer, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
 import { useApolloClient } from "@apollo/client";
@@ -23,14 +23,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     //user not logged in
   } else if (!data?.me) {
     body = (
-      <Flex color ="#499D62">
-        <Link href="/">FoodFinder</Link>
+      <Flex color ="green">
+        <NextLink href="/"><Link fontSize="2xl">FoodFinder</Link></NextLink>
         <Spacer/>
         <Button bgColor = "transparent" size = "sm">
-        <Link href="/register">Register</Link>
+        <NextLink href="/register"><Link>Register</Link></NextLink>
         </Button>
-        <Button textColor = "white" bgColor = "#499D62" mx = {1} size = "sm">
-        <Link href="/login">Login</Link>
+        <Button textColor = "white" bgColor="green" mx = {1} size = "sm">
+        <NextLink href="/login">Login</NextLink>
         </Button>
       </Flex>
     );
@@ -38,13 +38,16 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   } else {
     body = (
       <Flex>
-        <Box mr={2}>{data.me.username}</Box>
-        <Box ml="auto">
-          <Link href="/">FoodFinder</Link>
+        <Box>
+          <Link href="/"><Text color ="green" fontSize="2xl">FoodFinder</Text></Link>
         </Box>
+        <Spacer/>
+        <Button mr={2} bgColor ="transparent" color = "dark">{data.me.username}</Button>
         <Button
           ml="auto"
-          color="white"
+          textColor="white"
+          bgColor="green"
+          p={2}
           onClick={async () => {
             await logout();
             await apolloClient.resetStore()

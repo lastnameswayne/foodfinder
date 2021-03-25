@@ -1,4 +1,3 @@
-import { Upvote } from "../entities/Upvote";
 import { MyContext } from "src/types";
 import {
   Arg,
@@ -17,7 +16,19 @@ import {
 import { getConnection } from "typeorm";
 import { Post } from "../entities/Post";
 import { isAuth } from "../middleware/isAuth";
-//import { User } from "../entities/User";
+import { User } from "../entities/User";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
+import { createWriteStream } from "fs";
+
+// import { Storage } from "@google-cloud/storage";
+// import path from "path";
+// const files = [];
+// const gc = new Storage({
+//   keyFilename: path.join(__dirname, "../foodfinder-308619-efbc75405f18.json"),
+//   projectId: "foodfinder-308619",
+// });
+
+//const bucket = gc.bucket("foodfinder");
 
 @InputType()
 class PostInput {
@@ -42,84 +53,16 @@ export class PostResolver {
     return root.text.slice(0, 50);
   }
 
-  // @FieldResolver(() => User)
-  // creator(@Root() post: Post, @Ctx() { userLoader }: MyContext) {
-  //   return userLoader.load(post.creatorId);
-  // }
-
-
-  @Mutation(() => Boolean)
-  @UseMiddleware(isAuth)
-  async vote(
-    @Arg("postId", () => Int) postId: number,
-    @Arg("value", () => Int) value: number,
-    @Ctx() { req }: MyContext
-  ) {
-    const isUpvote = value !== -1;
-    const realValue = isUpvote ? 1 : -1;
-    const { userId } = req.session;
-
-    const upvote = await Upvote.findOne({ where: { postId, userId } });
-
-    //user has voted on post before and they are changing
-    //the previous vote
-    if (upvote && upvote.value !== realValue) {
-      await getConnection().transaction(async (tm) => {
-        await tm.query(
-          `
-        update upvote
-        set value = $1
-        where "postId" = $2 and "userId" = $3
-        `,
-          [realValue, postId, userId]
-        );
-
-        await tm.query(
-          `
-        update post
-        set points = points + $1
-        where id = $2
-        `,
-          [2 * realValue, postId]
-        );
-      });
-
-      //has never voted before
-    } else if (!upvote) {
-      await getConnection().transaction(async (tm) => {
-        await tm.query(
-          `
-        insert into upvote ("userId", "postId", value)
-        values ($1,$2,$3);
-        `,
-          [userId, postId, realValue]
-        );
-
-        await tm.query(
-          `
-        update post
-        set points = points + $1
-        where id = $2;
-        `,
-          [realValue, postId]
-        );
-      });
-    }
-
-    // await Upvote.insert({
-    //   userId,
-    //   postId,
-    //   value: realValue
-
-    // })
-    return true;
+  @FieldResolver(() => User)
+  creator(@Root() post: Post, @Ctx() { userLoader }: MyContext) {
+    return userLoader.load(post.creatorId);
   }
 
   @Query(() => PaginatedPosts)
   async posts(
     @Arg("limit", () => Int) limit: number,
     @Arg("cursor", () => String, { nullable: true }) cursor: string | null,
-    @Ctx() { }: MyContext
+    @Ctx() {}: MyContext
   ): Promise<PaginatedPosts> {
     const realLimit = Math.min(50, limit);
     const realLimitPlusOne = realLimit + 1; //get one more post to check if there are more left
@@ -199,8 +142,60 @@ export class PostResolver {
     if (post.creatorId !== req.session.userId) {
       throw new Error("not authorized");
     }
-    await Upvote.delete({ postId: id });
     await Post.delete({ id, creatorId: req.session.userId });
     return true;
   }
+
+  // @Mutation(() => Boolean)
+  // async singleUpload(@Arg("file", (_) => GraphQLUpload) file: FileUpload) {
+  //   const { createReadStream, filename } = await file;
+  //   const writableStream = createWriteStream(
+  //     `${__dirname}/../../images/${filename}`,
+  //     { autoClose: true }
+  //   );
+  //   let image;
+  //   try {
+  //     (res: any, rej: any) => {
+  //       image = createReadStream()
+  //         .pipe(writableStream)
+  //         .on("finish", () => res(true))
+  //         .on("error", () => rej(false));
+  //     };
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  //   console.log(image);
+
+  //   return true;
+  // }
+
+  @Mutation((returns) => Boolean)
+  async singleUpload(
+    @Arg("file", () => GraphQLUpload)
+    { createReadStream, filename }: FileUpload
+  ) {
+    return new Promise(async (resolve, reject) =>
+      createReadStream()
+        .pipe(
+          createWriteStream(`${__dirname}/../../images/${filename}`, {
+            autoClose: true,
+          })
+        )
+        .on("finish", () => resolve(true))
+        .on("error", () => reject(false))
+    );
+  }
+
+  // @Mutation(() => Boolean)
+  // async addProfilePicture(
+  //   @Arg("picture", () => GraphQLUpload)
+  //   { createReadStream, filename }: Upload
+  // ): Promise<boolean> {
+  //   return new Promise(async (resolve, reject) =>
+  //     createReadStream()
+  //       .pipe(createWriteStream(__dirname + `/../../../images/${filename}`))
+  //       .on("finish", () => resolve(true))
+  //       .on("error", () => reject(false))
+  //   );
+  // }
 }

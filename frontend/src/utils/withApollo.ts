@@ -1,17 +1,16 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import {createWithApollo}  from './createWithApollo'
-import { PaginatedPosts } from '../generated/graphql';
-import { NextPageContext } from 'next';
+import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { createWithApollo } from "./createWithApollo";
+import { PaginatedPosts } from "../generated/graphql";
+import { NextPageContext } from "next";
 
-
-const createClient = (ctx: NextPageContext) => 
-new ApolloClient({
+const createClient = (ctx: NextPageContext) =>
+  new ApolloClient({
     uri: "http://localhost:4000/graphql",
     credentials: "include",
     headers: {
-      cookie: 
-      (typeof window === 'undefined' ? ctx.req?.headers.cookie : undefined) ||
-      "",
+      cookie:
+        (typeof window === "undefined" ? ctx.req?.headers.cookie : undefined) ||
+        "",
     },
     cache: new InMemoryCache({
       typePolicies: {
@@ -22,10 +21,10 @@ new ApolloClient({
               merge(
                 existing: PaginatedPosts | undefined,
                 incoming: PaginatedPosts
-              ): PaginatedPosts {              
+              ): PaginatedPosts {
                 return {
-                  ...incoming, 
-                  posts: [...existing?.posts || [], ...incoming.posts],
+                  ...incoming,
+                  posts: [...(existing?.posts || []), ...incoming.posts],
                 };
               },
             },
@@ -34,4 +33,4 @@ new ApolloClient({
       },
     }),
   });
-export const withApollo = createWithApollo(createClient)
+export const withApollo = createWithApollo(createClient);

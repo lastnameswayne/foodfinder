@@ -3,7 +3,6 @@ import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react"
 import NextLink from "next/link";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 import { Layout } from "../components/Layout";
-import { UpvoteSection } from "../components/UpvoteSection";
 import { usePostsQuery, PostsQuery, useMeQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
 //restart
@@ -40,7 +39,6 @@ const Index = () => {
           {data!.posts.posts.map((p) =>
             !p ? null : (
               <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
-                <UpvoteSection post={p}></UpvoteSection>
                 <Box flex={1}>
                   <Flex>
                     <Link>
