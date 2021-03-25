@@ -45,7 +45,13 @@ const Index = () => {
         <Stack direction={["column", "row"]} spacing={8}>
           {data!.posts.posts.map((p) =>
             !p ? null : (
-              <Flex key={p.id} p={5} shadow="md" borderWidth="1px">
+              <Flex
+                w={["100%", "75%", "50%", "25%"]}
+                key={p.id}
+                p={5}
+                shadow="md"
+                borderWidth="1px"
+              >
                 <Box flex={1}>
                   <Flex>
                     <Link>
