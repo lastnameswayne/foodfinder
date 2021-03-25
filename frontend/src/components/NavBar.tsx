@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Heading, Link, Spacer, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import NextLink from "next/link";
@@ -9,11 +17,10 @@ interface NavBarProps {}
 export const NavBar: React.FC<NavBarProps> = ({}) => {
   const router = useRouter();
   const [logout, { loading: logoutFetching }] = useLogoutMutation();
-  const apolloClient = useApolloClient()
+  const apolloClient = useApolloClient();
   const { data, loading } = useMeQuery({
     skip: isServer(),
   });
-
 
   let body = null;
 
@@ -23,14 +30,18 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     //user not logged in
   } else if (!data?.me) {
     body = (
-      <Flex color ="green">
-        <NextLink href="/"><Link fontSize="2xl">FoodFinder</Link></NextLink>
-        <Spacer/>
-        <Button bgColor = "transparent" size = "sm">
-        <NextLink href="/register"><Link>Register</Link></NextLink>
+      <Flex color="green">
+        <NextLink href="/">
+          <Link fontSize="2xl">FoodFinder</Link>
+        </NextLink>
+        <Spacer />
+        <Button bgColor="transparent" size="sm">
+          <NextLink href="/register">
+            <Link>Register</Link>
+          </NextLink>
         </Button>
-        <Button textColor = "white" bgColor="green" mx = {1} size = "sm">
-        <NextLink href="/login">Login</NextLink>
+        <Button textColor="white" bgColor="green" mx={1} size="sm">
+          <NextLink href="/login">Login</NextLink>
         </Button>
       </Flex>
     );
@@ -39,18 +50,25 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     body = (
       <Flex>
         <Box>
-          <Link href="/"><Text color ="green" fontSize="2xl">FoodFinder</Text></Link>
+          <Link href="/">
+            <Text color="green" fontSize="2xl">
+              FoodFinder
+            </Text>
+          </Link>
         </Box>
-        <Spacer/>
-        <Button mr={2} bgColor ="transparent" color = "dark">{data.me.username}</Button>
+        <Spacer />
+        <Button mr={2} bgColor="transparent" color="dark">
+          {data.me.username}
+        </Button>
         <Button
           ml="auto"
+          size="sm"
           textColor="white"
           bgColor="green"
           p={2}
           onClick={async () => {
             await logout();
-            await apolloClient.resetStore()
+            await apolloClient.resetStore();
           }}
           isLoading={logoutFetching}
           variant="link"
@@ -61,7 +79,14 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
     );
   }
   return (
-    <Box position="sticky" top={0} zIndex={1} bg="transparent" p={4} ml={"auto"}>
+    <Box
+      position="sticky"
+      top={0}
+      zIndex={1}
+      bg="transparent"
+      p={4}
+      ml={"auto"}
+    >
       <Box ml={"auto"}>{body}</Box>
     </Box>
   );

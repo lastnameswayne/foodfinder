@@ -18,17 +18,17 @@ import { UserResolver } from "./resolvers/user";
 import { createUserLoader } from "./utils/createUserLoader";
 import { graphqlUploadExpress } from "graphql-upload";
 const main = async () => {
-  await createConnection({
+  const conn = await createConnection({
     type: "postgres",
     url: process.env.DATABASE_URL,
     logging: true,
-    // synchronize: true,
+    //synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User],
   });
   //await conn.runMigrations();
 
-  //await User.delete({});
+  //await Post.delete({});
 
   const app = express();
   app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));

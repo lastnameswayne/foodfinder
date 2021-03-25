@@ -1,5 +1,13 @@
-
-import { Box, Button, Flex, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Link,
+  Stack,
+  Text,
+  Image,
+} from "@chakra-ui/react";
 import NextLink from "next/link";
 import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 import { Layout } from "../components/Layout";
@@ -12,16 +20,15 @@ const Index = () => {
   const { data, loading, fetchMore, variables } = usePostsQuery({
     variables: {
       limit: 15,
-      cursor: null
+      cursor: null,
     },
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
 
   if (!loading && !data) {
     return <div>No posts available.</div>;
   }
 
-  
   return (
     <Layout>
       <Flex>
@@ -42,9 +49,9 @@ const Index = () => {
                 <Box flex={1}>
                   <Flex>
                     <Link>
-                    <NextLink href="/post/[id]" as={`/post/${p.id}`}>
-                      <Heading fontSize="xl">{p.title}</Heading>
-                    </NextLink>
+                      <NextLink href="/post/[id]" as={`/post/${p.id}`}>
+                        <Heading fontSize="xl">{p.title}</Heading>
+                      </NextLink>
                     </Link>
                     {meData?.me?.id !== p.creator.id ? null : (
                       <EditDeletePostButtons id={p.id}></EditDeletePostButtons>
@@ -52,6 +59,7 @@ const Index = () => {
                   </Flex>
                   <Text>by {p.creator.username}</Text>
                   <Text mt={4}>{p.textSnippet}</Text>
+                  <Image src={p.img}></Image>
                 </Box>
               </Flex>
             )
@@ -65,26 +73,27 @@ const Index = () => {
               fetchMore({
                 variables: {
                   limit: variables?.limit,
-                  cursor: data.posts.posts[data.posts.posts.length - 1].createdAt,
+                  cursor:
+                    data.posts.posts[data.posts.posts.length - 1].createdAt,
                 },
-            //     updateQuery: (previousValue, {fetchMoreResult}): PostsQuery => {
-            //       if (!fetchMoreResult) {
-            //         return previousValue as PostsQuery }
-            //     return {
-            //       _typename: 'Query',
-            //       posts: {
-            //         __typename: "PaginatedPosts",
-            //         hasMore: (fetchMoreResult PostsQuery).posts.hasMore,
-            //         posts: [
-            //           ...(previousValue as PostsQuery).posts.posts,
-            //           ...(fetchMoreResult as PostsQuery).posts.posts
-            //         ]
-            //       },
-            //     };
-            //   });
-            // }}
-            });
-          }} 
+                //     updateQuery: (previousValue, {fetchMoreResult}): PostsQuery => {
+                //       if (!fetchMoreResult) {
+                //         return previousValue as PostsQuery }
+                //     return {
+                //       _typename: 'Query',
+                //       posts: {
+                //         __typename: "PaginatedPosts",
+                //         hasMore: (fetchMoreResult PostsQuery).posts.hasMore,
+                //         posts: [
+                //           ...(previousValue as PostsQuery).posts.posts,
+                //           ...(fetchMoreResult as PostsQuery).posts.posts
+                //         ]
+                //       },
+                //     };
+                //   });
+                // }}
+              });
+            }}
             isLoading={loading}
             m="auto"
             my={6}
@@ -97,4 +106,4 @@ const Index = () => {
   );
 };
 
-export default withApollo({ssr: true})(Index);
+export default withApollo({ ssr: true })(Index);

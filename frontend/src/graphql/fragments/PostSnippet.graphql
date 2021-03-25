@@ -4,6 +4,7 @@ fragment PostSnippet on Post {
   updatedAt
   title
   textSnippet
+  img
   creator {
     id
     username

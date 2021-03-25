@@ -5,23 +5,26 @@ import { useRouter } from "next/router";
 import React, { useCallback, useState } from "react";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
-import {
-  useCreatePostMutation,
-  useUploadImageMutation,
-} from "../generated/graphql";
+import { useCreatePostMutation } from "../generated/graphql";
 import { useIsAuth } from "../utils/useIsAuth";
 import { withApollo } from "../utils/withApollo";
 import { useDropzone } from "react-dropzone";
-import { title } from "process";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/client/react/hooks";
+
+const uploadFileMutation = gql`
+  mutation UploadImage($file: Upload!) {
+    singleUpload(file: $file)
+  }
+`;
 
 export const CreatePost: React.FC<{}> = ({}) => {
-  const [uploadFile] = useUploadImageMutation();
-
+  const [createPost] = useCreatePostMutation();
   const [fileToUpload, setFileToUpload] = useState();
+
   const onDrop = useCallback(
     ([file]) => {
       setFileToUpload(file);
-      console.log(file);
     },
     [setFileToUpload]
   );
@@ -29,7 +32,6 @@ export const CreatePost: React.FC<{}> = ({}) => {
 
   const router = useRouter();
   useIsAuth();
-  const [createPost] = useCreatePostMutation();
 
   return (
     <Layout variant="small">
@@ -38,15 +40,22 @@ export const CreatePost: React.FC<{}> = ({}) => {
         onSubmit={async (values, { setErrors }) => {
           console.log(values);
           console.log(fileToUpload);
-          const { errors } = await uploadFile(fileToUpload);
-          // const { errors } = await createPost({
-          //   variables: { input: { title: values.title, text: values.text } },
-          //   update: (cache) => {
-          //     cache.evict({ fieldName: "posts" });
-          //   },
-          // });
+          const { errors } = await createPost({
+            variables: {
+              input: {
+                title: values.title,
+                text: values.text,
+              },
+              file: fileToUpload,
+            },
+            update: (cache) => {
+              cache.evict({ fieldName: "posts" });
+            },
+          });
           if (!errors) {
             router.push("/");
+          } else {
+            console.log(errors);
           }
         }}
       >

@@ -4,9 +4,7 @@ query Post($id: Int!) {
     createdAt
     updatedAt
     title
-    points
     text
-    voteStatus
     creator {
       id
       username

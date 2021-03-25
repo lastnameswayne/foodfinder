@@ -46,11 +46,10 @@ export type Post = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   text: Scalars['String'];
-  points: Scalars['Float'];
   title: Scalars['String'];
   creator: User;
   creatorId: Scalars['Float'];
-  voteStatus?: Maybe<Scalars['Int']>;
+  img: Scalars['String'];
   textSnippet: Scalars['String'];
 };
 
@@ -65,10 +64,9 @@ export type User = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createPost: Post;
+  createPost: Scalars['Boolean'];
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
-  singleUpload: Scalars['Boolean'];
   changePassword: UserResponse;
   forgotPassword: Scalars['Boolean'];
   register: UserResponse;
@@ -79,6 +77,7 @@ export type Mutation = {
 
 export type MutationCreatePostArgs = {
   input: PostInput;
+  file: Scalars['Upload'];
 };
 
 
@@ -91,11 +90,6 @@ export type MutationUpdatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Int'];
-};
-
-
-export type MutationSingleUploadArgs = {
-  file: Scalars['Upload'];
 };
 
 
@@ -146,7 +140,7 @@ export type UsernamePasswordInput = {
 
 export type PostSnippetFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'textSnippet'>
+  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'textSnippet' | 'img'>
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -190,15 +184,13 @@ export type ChangePasswordMutation = (
 
 export type CreatePostMutationVariables = Exact<{
   input: PostInput;
+  file: Scalars['Upload'];
 }>;
 
 
 export type CreatePostMutation = (
   { __typename?: 'Mutation' }
-  & { createPost: (
-    { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'creatorId'>
-  ) }
+  & Pick<Mutation, 'createPost'>
 );
 
 export type DeletePostMutationVariables = Exact<{
@@ -271,16 +263,6 @@ export type UpdatePostMutation = (
   )> }
 );
 
-export type UploadImageMutationVariables = Exact<{
-  file: Scalars['Upload'];
-}>;
-
-
-export type UploadImageMutation = (
-  { __typename?: 'Mutation' }
-  & Pick<Mutation, 'singleUpload'>
-);
-
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -301,7 +283,7 @@ export type PostQuery = (
   { __typename?: 'Query' }
   & { post?: Maybe<(
     { __typename?: 'Post' }
-    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'points' | 'text' | 'voteStatus'>
+    & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'text'>
     & { creator: (
       { __typename?: 'User' }
       & Pick<User, 'id' | 'username'>
@@ -334,6 +316,7 @@ export const PostSnippetFragmentDoc = gql`
   updatedAt
   title
   textSnippet
+  img
   creator {
     id
     username
@@ -397,15 +380,8 @@ export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswo
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
 export const CreatePostDocument = gql`
-    mutation CreatePost($input: PostInput!) {
-  createPost(input: $input) {
-    id
-    createdAt
-    updatedAt
-    title
-    points
-    creatorId
-  }
+    mutation CreatePost($input: PostInput!, $file: Upload!) {
+  createPost(input: $input, file: $file)
 }
     `;
 export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
@@ -424,6 +400,7 @@ export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, C
  * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
  *   variables: {
  *      input: // value for 'input'
+ *      file: // value for 'file'
  *   },
  * });
  */
@@ -624,36 +601,6 @@ export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
 export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
 export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
-export const UploadImageDocument = gql`
-    mutation UploadImage($file: Upload!) {
-  singleUpload(file: $file)
-}
-    `;
-export type UploadImageMutationFn = Apollo.MutationFunction<UploadImageMutation, UploadImageMutationVariables>;
-
-/**
- * __useUploadImageMutation__
- *
- * To run a mutation, you first call `useUploadImageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUploadImageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [uploadImageMutation, { data, loading, error }] = useUploadImageMutation({
- *   variables: {
- *      file: // value for 'file'
- *   },
- * });
- */
-export function useUploadImageMutation(baseOptions?: Apollo.MutationHookOptions<UploadImageMutation, UploadImageMutationVariables>) {
-        return Apollo.useMutation<UploadImageMutation, UploadImageMutationVariables>(UploadImageDocument, baseOptions);
-      }
-export type UploadImageMutationHookResult = ReturnType<typeof useUploadImageMutation>;
-export type UploadImageMutationResult = Apollo.MutationResult<UploadImageMutation>;
-export type UploadImageMutationOptions = Apollo.BaseMutationOptions<UploadImageMutation, UploadImageMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {
@@ -693,9 +640,7 @@ export const PostDocument = gql`
     createdAt
     updatedAt
     title
-    points
     text
-    voteStatus
     creator {
       id
       username
