@@ -80,7 +80,7 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
   }
   return (
     <Box
-      position="sticky"
+      position="static"
       top={0}
       zIndex={1}
       bg="transparent"

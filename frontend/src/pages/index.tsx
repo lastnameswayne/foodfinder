@@ -8,6 +8,7 @@ import {
   Text,
   Image,
   Spacer,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
@@ -23,7 +24,7 @@ const Index = () => {
   const { data: meData } = useMeQuery();
   const { data, loading, fetchMore, variables } = usePostsQuery({
     variables: {
-      limit: 15,
+      limit: 3,
       cursor: null,
     },
     notifyOnNetworkStatusChange: true,
@@ -46,7 +47,7 @@ const Index = () => {
       {!data && loading ? (
         <div>Loading...</div>
       ) : (
-        <Stack direction={["column", "row"]} spacing={8}>
+        <SimpleGrid columns={3} spacing={8}>
           {data!.posts.posts.map((p) =>
             !p ? null : (
               <Flex
@@ -54,8 +55,8 @@ const Index = () => {
                   background: `linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)), url(${p.img})`,
                 }}
                 // bgImage={`url(${p.img})`}
-                w={["100%", "75%", "50%", "20em"]}
-                h={["100%, 75%", "50%", "25em"]}
+                minW={["100em", "75em", "50em", "15em"]}
+                h={["100em", "75em", "50em", "25em"]}
                 key={p.id}
                 p={5}
                 shadow="md"
@@ -81,7 +82,7 @@ const Index = () => {
               </Flex>
             )
           )}
-        </Stack>
+        </SimpleGrid>
       )}
       {data && data.posts.hasMore ? (
         <Flex>
@@ -114,6 +115,8 @@ const Index = () => {
             isLoading={loading}
             m="auto"
             my={6}
+            bgColor="dark"
+            textColor="white"
           >
             Load more!
           </Button>
