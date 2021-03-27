@@ -157,18 +157,7 @@ export class PostResolver {
             })
         )
     );
-    console.log(imgURL);
-    console.log(post);
-
     return true;
-    // return Post.create({
-    //   ...input,
-    //   creatorId: req.session.userId,
-    //   img: imgURL,
-    // }).save();
-
-    // console.log(imgURL);
-    // return post;
   }
 
   @Mutation(() => Post, { nullable: true })

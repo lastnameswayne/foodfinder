@@ -2,6 +2,7 @@ import { Box, Button } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { InputField } from "../components/InputField";
+import PrimaryButton from "../components/PrimaryButton";
 import Wrapper from "../components/Wrapper";
 import { useForgotpasswordMutation } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
@@ -33,9 +34,13 @@ export const ForgotPassword: React.FC<{}> = ({}) => {
                   type="email"
                 />
               </Box>
-              <Button mt={4} type="submit" isLoading={isSubmitting}>
-                Forgot password
-              </Button>
+              <PrimaryButton
+                text="Forgot password"
+                bgColor="dark"
+                mt={4}
+                type="submit"
+                isLoading={isSubmitting}
+              ></PrimaryButton>
             </Form>
           )
         }

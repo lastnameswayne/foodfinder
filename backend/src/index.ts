@@ -17,12 +17,13 @@ import { PostResolver } from "./resolvers/post";
 import { UserResolver } from "./resolvers/user";
 import { createUserLoader } from "./utils/createUserLoader";
 import { graphqlUploadExpress } from "graphql-upload";
+
 const main = async () => {
-  const conn = await createConnection({
+  await createConnection({
     type: "postgres",
-    url: process.env.DATABASE_URL,
+    url: "postgresql://postgres:postgres@localhost:5432/postgres",
     logging: true,
-    //synchronize: true,
+    synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User],
   });

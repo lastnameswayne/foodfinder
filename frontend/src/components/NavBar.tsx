@@ -13,6 +13,7 @@ import NextLink from "next/link";
 import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 import { isServer } from "../utils/isServer";
 import { useApolloClient } from "@apollo/client";
+import PrimaryButton from "./PrimaryButton";
 interface NavBarProps {}
 export const NavBar: React.FC<NavBarProps> = ({}) => {
   const router = useRouter();
@@ -40,54 +41,40 @@ export const NavBar: React.FC<NavBarProps> = ({}) => {
             <Link>Register</Link>
           </NextLink>
         </Button>
-        <Button textColor="white" bgColor="green" mx={1} size="sm">
-          <NextLink href="/login">Login</NextLink>
-        </Button>
+        <NextLink href="/login">
+          <PrimaryButton bgColor="green" text="Login" size="sm"></PrimaryButton>
+        </NextLink>
       </Flex>
     );
     //user  logged in
   } else {
     body = (
-      <Flex>
+      <Flex color="green">
         <Box>
           <Link href="/">
-            <Text color="green" fontSize="2xl">
-              FoodFinder
-            </Text>
+            <Text fontSize="2xl">FoodFinder</Text>
           </Link>
         </Box>
         <Spacer />
-        <Button mr={2} bgColor="transparent" color="dark">
+        <Button size="sm" mr={2} bgColor="transparent" color="dark">
           {data.me.username}
         </Button>
-        <Button
-          ml="auto"
-          size="sm"
-          textColor="white"
+        <PrimaryButton
           bgColor="green"
-          p={2}
+          text="Log out"
+          size="sm"
           onClick={async () => {
             await logout();
             await apolloClient.resetStore();
           }}
           isLoading={logoutFetching}
-          variant="link"
-        >
-          Log out
-        </Button>
+        ></PrimaryButton>
       </Flex>
     );
   }
   return (
-    <Box
-      position="static"
-      top={0}
-      zIndex={1}
-      bg="transparent"
-      p={4}
-      ml={"auto"}
-    >
-      <Box ml={"auto"}>{body}</Box>
+    <Box position="static" zIndex={1} bg="transparent" p={4}>
+      <Box>{body}</Box>
     </Box>
   );
 };

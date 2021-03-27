@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { InputField } from "../components/InputField";
 import { Layout } from "../components/Layout";
+import PrimaryButton from "../components/PrimaryButton";
 import Wrapper from "../components/Wrapper";
 import { MeDocument, MeQuery, useLoginMutation } from "../generated/graphql";
 import { toErrorMap } from "../utils/toErrorMap";
@@ -20,19 +21,19 @@ export const Login: React.FC<loginProps> = ({}) => {
       <Formik
         initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await login({ 
-            variables: values, 
-            update: (cache, {data}) => {
-            cache.writeQuery<MeQuery>({
-              query: MeDocument,
-              data: {
-                __typename: 'Query',
-                me: data?.login.user
-              }
-            });
-            cache.evict({fieldName: "posts:{}"});
-          },
-        });
+          const response = await login({
+            variables: values,
+            update: (cache, { data }) => {
+              cache.writeQuery<MeQuery>({
+                query: MeDocument,
+                data: {
+                  __typename: "Query",
+                  me: data?.login.user,
+                },
+              });
+              cache.evict({ fieldName: "posts:{}" });
+            },
+          });
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
           } else if (response.data?.login.user) {
@@ -62,12 +63,16 @@ export const Login: React.FC<loginProps> = ({}) => {
             <Box>
               <NextLink href="/forgot-password">forgot password?</NextLink>
             </Box>
-            <Button mt={4} type="submit" isLoading={isSubmitting}>
-              Login
-            </Button>
-            <Spacer/>
+            <PrimaryButton
+              bgColor="dark"
+              mt={4}
+              type="submit"
+              isLoading={isSubmitting}
+              text="Login"
+            ></PrimaryButton>
+            <Spacer />
             <Link>
-            <NextLink href="/register">don't have an account?</NextLink>
+              <NextLink href="/register">don't have an account?</NextLink>
             </Link>
           </Form>
         )}

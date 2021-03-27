@@ -4,19 +4,16 @@ import {
   Flex,
   Heading,
   Link,
-  Stack,
-  Text,
-  Image,
-  Spacer,
   SimpleGrid,
+  Spacer,
+  Text,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
-import DetailsFloat from "../components/DetailsFloat";
-import { EditDeletePostButtons } from "../components/EditDeletePostButtons";
 import { Layout } from "../components/Layout";
 import { MenuSettings } from "../components/MenuSettings";
-import { usePostsQuery, PostsQuery, useMeQuery } from "../generated/graphql";
+import PrimaryButton from "../components/PrimaryButton";
+import { useMeQuery, usePostsQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
 //restart
 
@@ -39,9 +36,12 @@ const Index = () => {
       <Flex>
         <Heading>Latest Finds</Heading>
         <NextLink href="/create-post">
-          <Button bg="dark" color="white" ml="auto" mb={8}>
-            Create post
-          </Button>
+          <PrimaryButton
+            bgColor="dark"
+            mb={8}
+            ml="auto"
+            text="Create find"
+          ></PrimaryButton>
         </NextLink>
       </Flex>
       {!data && loading ? (
@@ -54,6 +54,10 @@ const Index = () => {
                 style={{
                   background: `linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)), url(${p.img})`,
                 }}
+                transition="transform 250ms, opacity 400ms"
+                _hover={{
+                  transform: "scale(1.06)",
+                }}
                 // bgImage={`url(${p.img})`}
                 minW={["100em", "75em", "50em", "15em"]}
                 h={["100em", "75em", "50em", "25em"]}
@@ -63,6 +67,7 @@ const Index = () => {
                 borderWidth="1px"
                 borderRadius={20}
                 overflow="hidden"
+                mb={6}
               >
                 <Box textColor="white" flex={1}>
                   <Flex>
@@ -112,11 +117,20 @@ const Index = () => {
                 // }}
               });
             }}
+            variant="outline"
             isLoading={loading}
             m="auto"
-            my={6}
-            bgColor="dark"
-            textColor="white"
+            colorScheme="#484D6D"
+            _hover={{
+              transform: "scale(1.06)",
+              color: "darkHover",
+            }}
+            _active={{
+              color: "darkHover",
+            }}
+            _focus={{
+              outline: "0",
+            }}
           >
             Load more!
           </Button>

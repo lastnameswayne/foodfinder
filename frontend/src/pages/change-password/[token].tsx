@@ -1,14 +1,14 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Link, Flex } from "@chakra-ui/react";
 import { Formik, Form } from "formik";
 import { NextPage } from "next";
 import { withUrqlClient } from "next-urql";
-import Link from "next/link";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { InputField } from "../../components/InputField";
+import PrimaryButton from "../../components/PrimaryButton";
 import Wrapper from "../../components/Wrapper";
 import { useChangePasswordMutation } from "../../generated/graphql";
-import { createUrqlClient } from "../../utils/createUrqlClient";
 import { toErrorMap } from "../../utils/toErrorMap";
 import { withApollo } from "../../utils/withApollo";
 
@@ -21,10 +21,15 @@ const ChangePassword: NextPage<{ token?: any }> = () => {
       <Formik
         initialValues={{ newPassword: "" }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await changePassword({variables: {
-            newPassword: values.newPassword,
-            token: typeof router.query.token === 'string' ? router.query.token : "",
-          }});
+          const response = await changePassword({
+            variables: {
+              newPassword: values.newPassword,
+              token:
+                typeof router.query.token === "string"
+                  ? router.query.token
+                  : "",
+            },
+          });
           if (response.data?.changePassword.errors) {
             const errorMap = toErrorMap(response.data.changePassword.errors);
             if ("token" in errorMap) {
@@ -45,12 +50,20 @@ const ChangePassword: NextPage<{ token?: any }> = () => {
               type="password"
             />
             {tokenError ? <Box color="red">{tokenError}</Box> : null}
-            <Flex mt = {2}>
-              <Link href="/forgot-password">change the password again</Link>
+            <Flex mt={2}>
+              <Link>
+                <NextLink href="/forgot-password">
+                  change the password again
+                </NextLink>
+              </Link>
             </Flex>
-            <Button mt={4} type="submit" isLoading={isSubmitting}>
-              Change password
-            </Button>
+            <PrimaryButton
+              text="Change password"
+              bgColor="dark"
+              mt={4}
+              type="submit"
+              isLoading={isSubmitting}
+            ></PrimaryButton>
           </Form>
         )}
       </Formik>
@@ -58,4 +71,4 @@ const ChangePassword: NextPage<{ token?: any }> = () => {
   );
 };
 
-export default withApollo({ssr: true})(ChangePassword);;
+export default withApollo({ ssr: true })(ChangePassword);

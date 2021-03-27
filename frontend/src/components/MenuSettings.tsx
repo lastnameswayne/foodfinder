@@ -29,9 +29,10 @@ export const MenuSettings: React.FC<MenuSettingsProps> = ({ id }) => {
     <Box textColor="black">
       <Menu>
         <MenuButton
+          transition="transform 250ms, opacity 400ms"
           _hover={{
+            transform: "scale(1.1)",
             bg: "transparent",
-            //scale here
           }}
           _active={{
             bg: "transparent",
