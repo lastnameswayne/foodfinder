@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, Image } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { type } from "os";
@@ -37,6 +37,7 @@ const Post = ({}) => {
         id={data.post.id}
         creatorId={data.post.creator.id}
       ></EditDeletePostButtons>
+      <Image src={data.post.text}></Image>
     </Layout>
   );
 };

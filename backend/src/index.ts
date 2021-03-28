@@ -32,7 +32,7 @@ const main = async () => {
   //await Post.delete({});
 
   const app = express();
-  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
+  app.use(graphqlUploadExpress({ maxFileSize: 1000000000, maxFiles: 10 }));
   const RedisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
   app.set("trust proxy", 1);

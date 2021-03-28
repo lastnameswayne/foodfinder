@@ -25,7 +25,7 @@ const Index = () => {
   const { data: meData } = useMeQuery();
   const { data, loading, fetchMore, variables, refetch } = usePostsQuery({
     variables: {
-      limit: 3,
+      limit: 10,
       cursor: null,
     },
     notifyOnNetworkStatusChange: true,
@@ -85,8 +85,10 @@ const Index = () => {
             .map((p) =>
               !p ? null : (
                 <Flex
+                  backgroundSize="contain"
                   style={{
                     background: `linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)), url(${p.img})`,
+                    backgroundSize: "contain",
                   }}
                   transition="transform 250ms, opacity 400ms"
                   _hover={{
