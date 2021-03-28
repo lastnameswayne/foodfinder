@@ -48,15 +48,19 @@ export const CreatePost: React.FC<{}> = ({}) => {
   return (
     <Layout variant="small">
       <Formik
-        initialValues={{ title: "", text: "" }}
+        initialValues={{ title: "", text: "", emojiselect: [""] }}
         onSubmit={async (values, { setErrors }) => {
           console.log(values);
           console.log(fileToUpload);
+          console.log(values.emojiselect);
+          console.log(values.emojiselect.join());
+
           const { errors } = await createPost({
             variables: {
               input: {
                 title: values.title,
                 text: values.text,
+                tags: values.emojiselect.join(),
               },
               file: fileToUpload,
             },
@@ -88,7 +92,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
             </Box>
             <Text fontWeight="semibold">Tags</Text>
             <Field
-              name={"example"}
+              name="emojiselect"
               component={EmojiTags}
               options={options}
             />{" "}

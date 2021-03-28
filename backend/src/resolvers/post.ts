@@ -35,6 +35,8 @@ class PostInput {
   title: string;
   @Field()
   text: string;
+  @Field()
+  tags: string;
 }
 
 @ObjectType()
@@ -94,35 +96,6 @@ export class PostResolver {
     return Post.findOne(id);
   }
 
-  // @Mutation(() => Boolean)
-  // async singleUpload(
-  //   @Arg("file", () => GraphQLUpload)
-  //   { createReadStream, filename }: FileUpload
-  // ) {
-  //   await new Promise(async (resolve, reject) =>
-  //     createReadStream()
-  //       .pipe(
-  //         storage.bucket(bucketName).file(filename).createWriteStream({
-  //           resumable: false,
-  //           gzip: true,
-  //         })
-  //       )
-
-  //       .on("finish", () =>
-  //         storage
-  //           .bucket(bucketName)
-  //           .file(filename)
-  //           .makePublic()
-  //           .then((e) => {
-  //             console.log(e[0].object);
-  //             console.log(
-  //               `https://storage.googleapis.com/foodfinder-bucket/${e[0].object}`
-  //             );
-  //           })
-  //       )
-  //       .on("error", () => reject(false))
-  //   );
-  // }
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async createPost(
@@ -133,7 +106,7 @@ export class PostResolver {
   ): Promise<Boolean> {
     console.log("starts");
     let imgURL = "";
-    const post = new Promise((reject) =>
+    new Promise((reject) =>
       createReadStream()
         .pipe(
           storage.bucket(bucketName).file(filename).createWriteStream({

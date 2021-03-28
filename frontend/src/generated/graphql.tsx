@@ -50,6 +50,7 @@ export type Post = {
   creator: User;
   creatorId: Scalars['Float'];
   img: Scalars['String'];
+  tags: Scalars['String'];
   textSnippet: Scalars['String'];
 };
 
@@ -117,6 +118,7 @@ export type MutationLoginArgs = {
 export type PostInput = {
   title: Scalars['String'];
   text: Scalars['String'];
+  tags: Scalars['String'];
 };
 
 
@@ -140,7 +142,7 @@ export type UsernamePasswordInput = {
 
 export type PostSnippetFragment = (
   { __typename?: 'Post' }
-  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'textSnippet' | 'img'>
+  & Pick<Post, 'id' | 'createdAt' | 'updatedAt' | 'title' | 'textSnippet' | 'img' | 'tags'>
   & { creator: (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
@@ -317,6 +319,7 @@ export const PostSnippetFragmentDoc = gql`
   title
   textSnippet
   img
+  tags
   creator {
     id
     username

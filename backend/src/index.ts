@@ -19,15 +19,15 @@ import { createUserLoader } from "./utils/createUserLoader";
 import { graphqlUploadExpress } from "graphql-upload";
 
 const main = async () => {
-  await createConnection({
+  const conn = await createConnection({
     type: "postgres",
-    url: "postgresql://postgres:postgres@localhost:5432/postgres",
+    url: "postgresql://postgres:postgres@localhost:5432/swayne3",
     logging: true,
-    synchronize: true,
+    //synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
     entities: [Post, User],
   });
-  //await conn.runMigrations();
+  await conn.runMigrations();
 
   //await Post.delete({});
 

@@ -5,6 +5,7 @@ fragment PostSnippet on Post {
   title
   textSnippet
   img
+  tags
   creator {
     id
     username

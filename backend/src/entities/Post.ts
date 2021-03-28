@@ -44,4 +44,8 @@ export class Post extends BaseEntity {
   @Field()
   @Column()
   img!: string;
+
+  @Field()
+  @Column({ nullable: true })
+  tags: string;
 }

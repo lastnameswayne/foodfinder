@@ -20,7 +20,12 @@ const EmojiTags: React.FC<EmojiTagsProps> = ({ options, field, form }) => {
         value={
           options ? options.find((option) => option.value === field.value) : ""
         }
-        onChange={(option: any) => form.setFieldValue(field.name, option.value)}
+        onChange={(option: any) => {
+          form.setFieldValue(
+            field.name,
+            option.map((item: any) => item.value)
+          );
+        }}
         onBlur={field.onBlur}
       />
     </>
