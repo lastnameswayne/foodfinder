@@ -24,11 +24,11 @@ export const CreatePost: React.FC<{}> = ({}) => {
     { value: "🧅", label: "🧅 Dry vegetables" },
     { value: "🥫", label: "🥫 Canned goods" },
     { value: "🍞", label: "🍞 Bread" },
-    { value: "🍕", label: "🍕 Meals" },
+    { value: "🥗", label: "🥗 Ready Meals" },
     { value: "🥕", label: "🥕 Fresh vegetables" },
     { value: "🥚", label: "🥚 Eggs and diary" },
     { value: "🥩", label: "🥩 Meat" },
-    { value: "🍎", label: "🍎 Fruit" },
+    { value: "🍏", label: "🍏 Fruit" },
   ];
 
   const [createPost] = useCreatePostMutation();

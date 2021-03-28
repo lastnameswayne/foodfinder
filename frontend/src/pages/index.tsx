@@ -1,15 +1,17 @@
+import { gql, useLazyQuery } from "@apollo/client";
 import {
   Box,
   Button,
   Flex,
   Heading,
+  Input,
   Link,
   SimpleGrid,
   Spacer,
   Text,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { Layout } from "../components/Layout";
 import { MenuSettings } from "../components/MenuSettings";
 import PrimaryButton from "../components/PrimaryButton";
@@ -18,8 +20,10 @@ import { withApollo } from "../utils/withApollo";
 //restart
 
 const Index = () => {
+  const tags = ["🥚", "🍏", "🥗", "🧅", "🍞", "🥕", "🥩", "🥫"];
+  const [searchTag, setSearchTag] = useState("");
   const { data: meData } = useMeQuery();
-  const { data, loading, fetchMore, variables } = usePostsQuery({
+  const { data, loading, fetchMore, variables, refetch } = usePostsQuery({
     variables: {
       limit: 3,
       cursor: null,
@@ -31,16 +35,44 @@ const Index = () => {
     return <div>No posts available.</div>;
   }
 
+  const milisecondsToDays = (ms: number) => {
+    const days = ms / 1000 / (24 * 60 * 60);
+    if (days < 1) return "today";
+    else {
+      return days.toPrecision(1) + " days ago";
+    }
+  };
+
   return (
     <Layout>
       <Flex>
-        <Heading>Latest Finds</Heading>
+        <Box>
+          <Heading>Latest Finds</Heading>
+          {tags.map((p) => {
+            return (
+              <Button
+                size="sm"
+                bgColor={p}
+                mr={1}
+                mt={2}
+                mb={6}
+                onClick={() => setSearchTag(p)}
+                key={p}
+                _hover={{
+                  bgColor: `${p}Hover`,
+                }}
+              >
+                {p}
+              </Button>
+            );
+          })}
+        </Box>
         <NextLink href="/create-post">
           <PrimaryButton
             bgColor="dark"
             mb={8}
             ml="auto"
-            text="Create find"
+            text="New post"
           ></PrimaryButton>
         </NextLink>
       </Flex>
@@ -48,45 +80,53 @@ const Index = () => {
         <div>Loading...</div>
       ) : (
         <SimpleGrid columns={3} spacing={8}>
-          {data!.posts.posts.map((p) =>
-            !p ? null : (
-              <Flex
-                style={{
-                  background: `linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)), url(${p.img})`,
-                }}
-                transition="transform 250ms, opacity 400ms"
-                _hover={{
-                  transform: "scale(1.06)",
-                }}
-                // bgImage={`url(${p.img})`}
-                minW={["100em", "75em", "50em", "15em"]}
-                h={["100em", "75em", "50em", "25em"]}
-                key={p.id}
-                p={5}
-                shadow="md"
-                borderWidth="1px"
-                borderRadius={20}
-                overflow="hidden"
-                mb={6}
-              >
-                <Box textColor="white" flex={1}>
-                  <Flex>
-                    <Link>
-                      <NextLink href="/post/[id]" as={`/post/${p.id}`}>
-                        <Heading fontSize="xl">{p.title}</Heading>
-                      </NextLink>
-                    </Link>
-                    <Spacer />
-                    {meData?.me?.id !== p.creator.id ? null : (
-                      <MenuSettings id={p.id}></MenuSettings>
-                    )}
-                  </Flex>
-                  <Text>by {p.creator.username}</Text>
-                  {/* <Text mt={4}>{p.textSnippet}</Text> */}
-                </Box>
-              </Flex>
-            )
-          )}
+          {data!.posts.posts
+            .filter((w) => w.tags.includes(searchTag))
+            .map((p) =>
+              !p ? null : (
+                <Flex
+                  style={{
+                    background: `linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)), url(${p.img})`,
+                  }}
+                  transition="transform 250ms, opacity 400ms"
+                  _hover={{
+                    transform: "scale(1.06)",
+                  }}
+                  // bgImage={`url(${p.img})`}
+                  minW={["100em", "75em", "50em", "15em"]}
+                  h={["100em", "75em", "50em", "25em"]}
+                  key={p.id}
+                  p={5}
+                  shadow="md"
+                  borderWidth="1px"
+                  borderRadius={20}
+                  overflow="hidden"
+                  mb={6}
+                >
+                  <Box textColor="white" flex={1}>
+                    <Flex>
+                      <Link>
+                        <NextLink href="/post/[id]" as={`/post/${p.id}`}>
+                          <Heading fontSize="xl">{p.title}</Heading>
+                        </NextLink>
+                      </Link>
+                      <Spacer />
+                      {meData?.me?.id !== p.creator.id ? null : (
+                        <MenuSettings id={p.id}></MenuSettings>
+                      )}
+                    </Flex>
+                    <Flex>
+                      <Text>by {p.creator.username} </Text>
+                      <Spacer />
+                      <Text>
+                        {milisecondsToDays(Date.now() - parseInt(p.createdAt))}
+                      </Text>
+                    </Flex>
+                    {/* <Text mt={4}>{p.textSnippet}</Text> */}
+                  </Box>
+                </Flex>
+              )
+            )}
         </SimpleGrid>
       )}
       {data && data.posts.hasMore ? (
