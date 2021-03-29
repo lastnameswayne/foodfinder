@@ -20,7 +20,7 @@ import { withApollo } from "../utils/withApollo";
 //restart
 
 const Index = () => {
-  const tags = ["🥚", "🍏", "🥗", "🧅", "🍞", "🥕", "🥩", "🥫"];
+  const tags = ["🥚", "🍏", "🥗", "🧅", "🍞", "🥕", "🥩", "🥫", "ALL"];
   const [searchTag, setSearchTag] = useState("");
   const { data: meData } = useMeQuery();
   const { data, loading, fetchMore, variables, refetch } = usePostsQuery({
@@ -43,6 +43,14 @@ const Index = () => {
     }
   };
 
+  const handleSetSearchTag = (p: string) => {
+    if (p === "ALL") {
+      setSearchTag("");
+    } else {
+      setSearchTag(p);
+    }
+  };
+
   return (
     <Layout>
       <Flex>
@@ -53,10 +61,11 @@ const Index = () => {
               <Button
                 size="sm"
                 bgColor={p}
+                textColor="white"
                 mr={1}
                 mt={2}
                 mb={6}
-                onClick={() => setSearchTag(p)}
+                onClick={() => handleSetSearchTag(p)}
                 key={p}
                 _hover={{
                   bgColor: `${p}Hover`,
@@ -67,19 +76,15 @@ const Index = () => {
             );
           })}
         </Box>
+        <Spacer />
         <NextLink href="/create-post">
-          <PrimaryButton
-            bgColor="dark"
-            mb={8}
-            ml="auto"
-            text="New post"
-          ></PrimaryButton>
+          <PrimaryButton bgColor="dark" mb={8} text="New post"></PrimaryButton>
         </NextLink>
       </Flex>
       {!data && loading ? (
         <div>Loading...</div>
       ) : (
-        <SimpleGrid columns={3} spacing={8}>
+        <SimpleGrid columns={[1, 1, 2, 3, 3]} spacing={8}>
           {data!.posts.posts
             .filter((w) => w.tags.includes(searchTag))
             .map((p) =>
@@ -94,8 +99,7 @@ const Index = () => {
                   _hover={{
                     transform: "scale(1.06)",
                   }}
-                  // bgImage={`url(${p.img})`}
-                  minW={["100em", "75em", "50em", "15em"]}
+                  minW={["60em", "45em", "30em", "15em"]}
                   h={["100em", "75em", "50em", "25em"]}
                   key={p.id}
                   p={5}

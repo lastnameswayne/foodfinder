@@ -32,12 +32,12 @@ const Post = ({}) => {
       <Heading>{data.post.title}</Heading>
       <Box mb={4}>
         <Text>{data.post.text}</Text>
+        <Text>{data.post.tags}</Text>
       </Box>
       <EditDeletePostButtons
         id={data.post.id}
         creatorId={data.post.creator.id}
       ></EditDeletePostButtons>
-      <Image src={data.post.text}></Image>
     </Layout>
   );
 };

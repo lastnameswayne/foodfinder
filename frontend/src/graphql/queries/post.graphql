@@ -5,6 +5,8 @@ query Post($id: Int!) {
     updatedAt
     title
     text
+    img
+    tags
     creator {
       id
       username

@@ -1,4 +1,13 @@
-import { Box, Button, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Input,
+  Slider,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderTrack,
+  Text,
+} from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
@@ -189,8 +198,9 @@ export const CreatePost: React.FC<{}> = ({}) => {
                   />
                   <Button
                     onClick={() => setShowCrop(false)}
-                    bgColor="red"
+                    bgColor="🥩Hover"
                     textColor="white "
+                    mr={2}
                   >
                     Cancel
                   </Button>
@@ -201,17 +211,37 @@ export const CreatePost: React.FC<{}> = ({}) => {
                   >
                     Crop
                   </Button>
+                  <Slider
+                    value={zoom}
+                    min={1}
+                    max={3}
+                    step={0.1}
+                    zIndex="1"
+                    aria-labelledby="Zoom"
+                    onChange={(zoom: number) => setZoom(zoom)}
+                    aria-label="slider-ex-1"
+                    defaultValue={0}
+                  >
+                    <SliderTrack>
+                      <SliderFilledTrack />
+                    </SliderTrack>
+                    <SliderThumb />
+                  </Slider>
                 </>
               ) : (
                 ""
               )}
             </Box>
-            <PrimaryButton
-              bgColor="dark"
-              type="submit"
-              isLoading={isSubmitting}
-              text="Post find"
-            ></PrimaryButton>
+            {showCrop ? (
+              ""
+            ) : (
+              <PrimaryButton
+                bgColor="dark"
+                type="submit"
+                isLoading={isSubmitting}
+                text="New post"
+              ></PrimaryButton>
+            )}
           </Form>
         )}
       </Formik>

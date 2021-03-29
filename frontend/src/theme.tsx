@@ -36,6 +36,8 @@ const theme = extendTheme({
     "🥗Hover": "#44A82E",
     "🥩": "#FF8585",
     "🥩Hover": "#FF2C2C",
+    ALL: "#414449",
+    ALLHover: "#A4A4A4",
   },
   fonts,
   breakpoints,
