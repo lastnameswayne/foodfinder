@@ -21,7 +21,7 @@ import { graphqlUploadExpress } from "graphql-upload";
 const main = async () => {
   const conn = await createConnection({
     type: "postgres",
-    url: "postgresql://postgres:postgres@localhost:5432/swayne3",
+    url: process.env.DATABASE_URL,
     logging: true,
     //synchronize: true,
     migrations: [path.join(__dirname, "./migrations/*")],
@@ -52,10 +52,10 @@ const main = async () => {
       cookie: {
         path: "/",
         maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // 10 years
-        httpOnly: true,
+        httpOnly: false,
         sameSite: "lax", // csrf
         secure: false, // cookie only works in https
-        domain: undefined,
+        domain: ".crud-app-fvvtl0okn-lastnameswayne.vercel.app",
       },
       saveUninitialized: false,
       secret: process.env.SESSION_SECRET,

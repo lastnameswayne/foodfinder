@@ -10,6 +10,7 @@
 /Users/tiarnanswayne/Documents/projects/foodfinder/backend/images/foodfinder-308619-2daf2d751cba.json
 # testing
 /coverage
+*/.env.local
 
 # next.js
 */.next/

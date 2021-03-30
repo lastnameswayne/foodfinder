@@ -19,6 +19,8 @@ import { useMeQuery, usePostsQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
 //restart
 
+console.log(process.env.NEXT_PUBLIC_API_URL);
+
 const Index = () => {
   const tags = ["🥚", "🍏", "🥗", "🧅", "🍞", "🥕", "🥩", "🥫", "ALL"];
   const [searchTag, setSearchTag] = useState("");

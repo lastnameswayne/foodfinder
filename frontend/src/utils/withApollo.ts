@@ -8,16 +8,18 @@ const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
     //@ts-ignore
     link: createUploadLink({
-      uri: "http://localhost:4000/graphql",
+      uri: process.env.NEXT_PUBLIC_API_URL as string,
       headers: {
         cookie:
           (typeof window === "undefined"
-            ? ctx.req?.headers.cookie
+            ? ctx?.req?.headers.cookie
             : undefined) || "",
       },
       fetch,
+      credentials: "include",
       fetchOptions: { credentials: "include" },
     }),
+    credentials: "include",
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

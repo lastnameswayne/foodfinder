@@ -10,13 +10,14 @@ import { toErrorMap } from "../utils/toErrorMap";
 import { withApollo } from "../utils/withApollo";
 import NextLink from "next/link";
 import PrimaryButton from "../components/PrimaryButton";
+import { Layout } from "../components/Layout";
 interface registerProps {}
 
 export const Register: React.FC<registerProps> = ({}) => {
   const router = useRouter();
   const [register] = useRegisterMutation();
   return (
-    <Wrapper variant="small">
+    <Layout variant="small">
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
@@ -72,7 +73,7 @@ export const Register: React.FC<registerProps> = ({}) => {
       <Link>
         <NextLink href="/login">already have an account?</NextLink>
       </Link>
-    </Wrapper>
+    </Layout>
   );
 };
 export default withApollo({ ssr: false })(Register);

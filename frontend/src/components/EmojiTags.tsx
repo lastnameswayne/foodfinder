@@ -2,7 +2,6 @@ import { Checkbox, Text, CheckboxGroup, HStack } from "@chakra-ui/react";
 import React from "react";
 import { FieldProps } from "formik";
 import Select, { OptionProps } from "react-select";
-import chroma from "chroma-js";
 
 interface EmojiTagsProps {
   options: Array<any>;

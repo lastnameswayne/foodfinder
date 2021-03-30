@@ -21,6 +21,7 @@
     "@urql/exchange-graphcache": "^3.4.0",
     "apollo-upload-client": "^14.1.3",
     "caniuse-lite": "^1.0.30001183",
+    "dotenv": "^8.2.0",
     "formik": "^2.2.6",
     "framer-motion": "^2.9.4",
     "graphql": "^15.4.0",
