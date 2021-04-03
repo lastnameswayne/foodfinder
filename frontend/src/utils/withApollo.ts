@@ -2,10 +2,22 @@ import { createWithApollo } from "./createWithApollo";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { PaginatedPosts } from "../generated/graphql";
 import { NextPageContext } from "next";
+import { createUploadLink } from "apollo-upload-client";
 
 const createClient = (ctx: NextPageContext) =>
   new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_API_URL as string,
+    //@ts-ignore
+    link: createUploadLink({
+      uri: process.env.NEXT_PUBLIC_API_URL as string,
+      headers: {
+        cookie:
+          (typeof window === "undefined"
+            ? ctx?.req?.headers.cookie
+            : undefined) || "",
+      },
+      fetch,
+      fetchOptions: { credentials: "include" },
+    }),
     credentials: "include",
     headers: {
       cookie:

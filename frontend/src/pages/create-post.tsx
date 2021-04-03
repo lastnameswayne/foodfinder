@@ -23,6 +23,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import EmojiTags from "../components/EmojiTags";
 import Cropper from "react-easy-crop";
 import { getCroppedImg } from "../utils/canvasUtils";
+import { useMutation } from "@apollo/client";
 const uploadFileMutation = gql`
   mutation UploadImage($file: Upload!) {
     singleUpload(file: $file)
@@ -41,6 +42,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
     { value: "🍏", label: "🍏 Fruit" },
   ];
 
+  const [upload] = useMutation(uploadFileMutation);
   const [createPost] = useCreatePostMutation();
   const [showCrop, setShowCrop] = useState(false);
   const [fileToUpload, setFileToUpload] = useState<File>();
@@ -100,9 +102,13 @@ export const CreatePost: React.FC<{}> = ({}) => {
 
   const onDrop = useCallback(
     ([file]) => {
+      console.log([file]);
+      console.log("single file", file);
+      console.log("file 0:", file[0]);
+      // setFileToUpload(file);
       onFileChange(file);
     },
-    [onFileChange]
+    [upload]
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -127,6 +133,8 @@ export const CreatePost: React.FC<{}> = ({}) => {
       <Formik
         initialValues={{ title: "", text: "", emojiselect: [""] }}
         onSubmit={async (values, { setErrors }) => {
+          console.log(fileToUpload);
+
           const { errors } = await createPost({
             variables: {
               input: {
@@ -134,7 +142,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
                 text: values.text,
                 tags: values.emojiselect.join(),
               },
-              file: [fileToUpload],
+              file: fileToUpload,
             },
             update: (cache) => {
               cache.evict({ fieldName: "posts" });

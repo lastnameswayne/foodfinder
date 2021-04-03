@@ -16,6 +16,7 @@ import { Post } from "./entities/Post";
 import { User } from "./entities/User";
 import path from "path";
 import { createUserLoader } from "./utils/createUserLoader";
+import { graphqlUploadExpress } from "graphql-upload";
 
 const main = async () => {
   await createConnection({
@@ -31,7 +32,7 @@ const main = async () => {
   // await Post.delete({});
 
   const app = express();
-
+  app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
   const RedisStore = connectRedis(session);
   const redis = new Redis(process.env.REDIS_URL);
   app.set("trust proxy", 1);
@@ -62,6 +63,7 @@ const main = async () => {
   );
 
   const apolloServer = new ApolloServer({
+    uploads: false, // disable apollo upload property
     schema: await buildSchema({
       resolvers: [HelloResolver, PostResolver, UserResolver],
       validate: false,
