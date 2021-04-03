@@ -106,7 +106,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  useIsAuth();
+  // useIsAuth();
 
   const InputDrop = () => {
     if (fileToUpload) {
@@ -134,7 +134,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
                 text: values.text,
                 tags: values.emojiselect.join(),
               },
-              file: fileToUpload,
+              file: [fileToUpload],
             },
             update: (cache) => {
               cache.evict({ fieldName: "posts" });
@@ -181,7 +181,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
               p={5}
               {...getRootProps()}
             >
-              <input accept="image/*" {...getInputProps()} />
+              <input {...getInputProps()} />
               <InputDrop></InputDrop>
             </Box>
             <Box width="100%" height="200" background="#333">
