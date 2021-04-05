@@ -112,8 +112,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
   );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
-  // useIsAuth();
-
+  useIsAuth();
   const InputDrop = () => {
     if (fileToUpload) {
       return <Text>📷 ✅</Text>;
@@ -149,7 +148,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
             },
           });
           if (!errors) {
-            router.push("/");
+            router.replace("/").then(() => router.reload());
           } else {
             console.log(errors);
           }
@@ -166,7 +165,7 @@ export const CreatePost: React.FC<{}> = ({}) => {
               <InputField
                 textarea
                 name="text"
-                placeholder="text..."
+                placeholder="description, contact info, location"
                 label="Description"
               />
             </Box>

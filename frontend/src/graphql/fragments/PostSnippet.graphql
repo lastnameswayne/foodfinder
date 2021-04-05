@@ -3,7 +3,6 @@ fragment PostSnippet on Post {
   createdAt
   updatedAt
   title
-  textSnippet
   img
   tags
   creator {

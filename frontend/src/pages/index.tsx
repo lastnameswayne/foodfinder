@@ -1,10 +1,8 @@
-import { gql, useLazyQuery } from "@apollo/client";
 import {
   Box,
   Button,
   Flex,
   Heading,
-  Input,
   Link,
   SimpleGrid,
   Spacer,
@@ -17,7 +15,6 @@ import { MenuSettings } from "../components/MenuSettings";
 import PrimaryButton from "../components/PrimaryButton";
 import { useMeQuery, usePostsQuery } from "../generated/graphql";
 import { withApollo } from "../utils/withApollo";
-//restart
 
 console.log(process.env.NEXT_PUBLIC_API_URL);
 
@@ -55,18 +52,18 @@ const Index = () => {
 
   return (
     <Layout>
-      <Flex>
+      <Flex flex={1} h="100%">
         <Box>
-          <Heading>Latest Finds</Heading>
+          <Heading ml={2}>Latest Finds</Heading>
           {tags.map((p) => {
             return (
               <Button
                 size="sm"
                 bgColor={p}
                 textColor="white"
-                mr={1}
+                ml={2}
                 mt={2}
-                mb={6}
+                mb={2}
                 onClick={() => handleSetSearchTag(p)}
                 key={p}
                 _hover={{
@@ -80,32 +77,42 @@ const Index = () => {
         </Box>
         <Spacer />
         <NextLink href="/create-post">
-          <PrimaryButton bgColor="dark" mb={8} text="New post"></PrimaryButton>
+          <PrimaryButton
+            mr={2}
+            bgColor="dark"
+            mb={8}
+            text="New post"
+          ></PrimaryButton>
         </NextLink>
       </Flex>
       {!data && loading ? (
         <div>Loading...</div>
       ) : (
-        <SimpleGrid columns={[1, 1, 2, 3, 3]} spacing={8}>
+        <SimpleGrid mt={6} columns={[1, 1, 3, 3]} spacing={8}>
           {data!.posts.posts
             .filter((w) => w.tags.includes(searchTag))
             .map((p) =>
               !p ? null : (
-                <Flex
-                  backgroundSize="contain"
+                <Box
+                  display="flex"
+                  flex={1}
                   style={{
                     background: `linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0)), url(${p.img})`,
-                    backgroundSize: "contain",
+                    backgroundSize: "100%",
+                    backgroundRepeat: "no-repeat",
                   }}
                   transition="transform 250ms, opacity 400ms"
                   _hover={{
                     transform: "scale(1.06)",
                   }}
-                  minW={["60em", "45em", "30em", "15em"]}
-                  h={["100em", "75em", "50em", "25em"]}
+                  maxW="100%"
+                  maxH="100%"
+                  w={["23em", "46em", "15em"]}
+                  h={["38.333em", "76.666em", "25em"]}
                   key={p.id}
                   p={5}
                   shadow="md"
+                  margin="auto"
                   borderWidth="1px"
                   borderRadius={20}
                   overflow="hidden"
@@ -130,9 +137,8 @@ const Index = () => {
                         {milisecondsToDays(Date.now() - parseInt(p.createdAt))}
                       </Text>
                     </Flex>
-                    {/* <Text mt={4}>{p.textSnippet}</Text> */}
                   </Box>
-                </Flex>
+                </Box>
               )
             )}
         </SimpleGrid>

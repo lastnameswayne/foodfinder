@@ -10,6 +10,7 @@ interface PrimaryButtonProps {
   ml?: number | string;
   mt?: number | string;
   mb?: number;
+  mr?: number;
   type?: "button" | "submit" | "reset";
   onClick?: () => void;
 }
@@ -25,6 +26,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   mt,
   m,
   ml,
+  mr,
   onClick,
 }) => {
   return (
@@ -37,6 +39,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
       bgColor={bgColor}
       size={size}
       mb={mb}
+      mr={mr}
       my={mt}
       ml={ml}
       m={m}
