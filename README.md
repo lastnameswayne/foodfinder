@@ -16,4 +16,4 @@ Created by <a href="https://www.twitter.com/lastnameswayne">@lastnameswayne</a> 
 
 ### Technology
 
-Made using Type-GraphQL, TS, Next.js, Express, Node, PSQL, Redis and TypeORM
+Made using Type-GraphQL, TS, Next.js, Express, Node, PSQL, Redis and TypeORM.
