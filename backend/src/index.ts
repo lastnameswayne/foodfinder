@@ -3,10 +3,6 @@ import "dotenv-safe/config";
 import { __prod__, COOKIE_NAME } from "./constants";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
-import { HelloResolver } from "./resolvers/hello";
-import { PostResolver } from "./resolvers/post";
-import { UserResolver } from "./resolvers/user";
 import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
@@ -17,6 +13,8 @@ import { User } from "./entities/User";
 import path from "path";
 import { createUserLoader } from "./utils/createUserLoader";
 import { graphqlUploadExpress } from "graphql-upload";
+import { createSchema } from "./utils/createSchema";
+import "regenerator-runtime/runtime.js";
 
 const main = async () => {
   await createConnection({
@@ -64,10 +62,7 @@ const main = async () => {
 
   const apolloServer = new ApolloServer({
     uploads: false, // disable apollo upload property
-    schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver, UserResolver],
-      validate: false,
-    }),
+    schema: await createSchema(),
     context: ({ req, res }) => ({
       req,
       res,

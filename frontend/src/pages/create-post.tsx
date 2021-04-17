@@ -76,7 +76,6 @@ export const CreatePost: React.FC<{}> = ({}) => {
   const showCroppedImage = useCallback(async () => {
     try {
       const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
-      console.log("donee", croppedImage);
       setCroppedImage(croppedImage);
       blobToFile(croppedImage, `${Date.now()}`);
     } catch (e) {

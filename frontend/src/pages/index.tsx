@@ -153,22 +153,6 @@ const Index = () => {
                   cursor:
                     data.posts.posts[data.posts.posts.length - 1].createdAt,
                 },
-                //     updateQuery: (previousValue, {fetchMoreResult}): PostsQuery => {
-                //       if (!fetchMoreResult) {
-                //         return previousValue as PostsQuery }
-                //     return {
-                //       _typename: 'Query',
-                //       posts: {
-                //         __typename: "PaginatedPosts",
-                //         hasMore: (fetchMoreResult PostsQuery).posts.hasMore,
-                //         posts: [
-                //           ...(previousValue as PostsQuery).posts.posts,
-                //           ...(fetchMoreResult as PostsQuery).posts.posts
-                //         ]
-                //       },
-                //     };
-                //   });
-                // }}
               });
             }}
             variant="outline"
