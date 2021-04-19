@@ -24,7 +24,7 @@ import path from "path";
 const storage = new Storage({
   keyFilename: path.join(
     __dirname,
-    "/../../images/foodfinder-308619-2daf2d751cba.json"
+    "/../../images/foodfinder-308619-bb7e1ba3985a.json"
   ),
 });
 const bucketName = "foodfinder-bucket";

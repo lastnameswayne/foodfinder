@@ -36,7 +36,7 @@ const main = async () => {
   app.set("trust proxy", 1);
   app.use(
     cors({
-      origin: __prod__ ? process.env.CORS_ORIGIN : "http://localhost:3001",
+      origin: __prod__ ? process.env.CORS_ORIGIN : "https://www.foodfinder.xyz",
       credentials: true,
     })
   );
