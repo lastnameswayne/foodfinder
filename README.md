@@ -1,6 +1,6 @@
 # 🍎 FoodFinder🍎
 
-🏆 WINNER OF STUDENT GEEK CHALLENGE 2021 🏆
+🏆 This project won the Student Geek Challenge 2021 🏆
 
 ⚡️Try it out:
 
