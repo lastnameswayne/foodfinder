@@ -1,4 +1,4 @@
-# 🍎 FoodFinder🍎
+# FoodFinder
 
 🏆 This project won the Student Geek Challenge 2021 🏆
 
@@ -6,11 +6,11 @@
 
 <a href = "https://www.foodfinder.xyz" target="_blank">https://www.foodfinder.xyz</a>
 
-## What is it?🤔🔗
+## What is it?🤔
 
 FoodFinder is a platform for sharing excess ingredients and meals to combat food waste.
 
-Created by <a href="https://www.twitter.com/lastnameswayne">@lastnameswayne</a> on Twitter✅
+Created by <a href="https://www.twitter.com/lastnameswayne">@lastnameswayne</a> on Twitter
 
 ### Technology
 
