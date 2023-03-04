@@ -4,7 +4,7 @@
 
 ⚡️Try it out:
 
-https://www.foodfinder.xyz/
+<a href = "https://www.foodfinder.xyz" target="_blank">https://www.foodfinder.xyz</a>
 
 ## What is it?🤔🔗
 
