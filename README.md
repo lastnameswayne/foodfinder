@@ -10,8 +10,6 @@ Try it out:
 
 FoodFinder is a platform for sharing excess ingredients and meals to combat food waste.
 
-Created by <a href="https://www.twitter.com/lastnameswayne">@lastnameswayne</a> on Twitter
-
 ### Technology
 
 Made using Type-GraphQL, TS, Next.js, Express, Node, PSQL, Redis and TypeORM.
