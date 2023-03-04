@@ -2,7 +2,7 @@
 
 🏆 This project won the Student Geek Challenge 2021 🏆
 
-⚡️Try it out:
+Try it out:
 
 <a href = "https://www.foodfinder.xyz" target="_blank">https://www.foodfinder.xyz</a>
 
